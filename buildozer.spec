@@ -1,88 +1,24 @@
 [app]
-
-# ── Identity ──────────────────────────────────────────────────────────────────
-title = SoraPlayer
-package.name = soraplayer
-package.domain = org.soraplayer
-version = 1.0.0
+title = Calypso
+package.name = calypso
+package.domain = org.tgwt69
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,json,js
-source.include_patterns = Modules/*.py,Modules/*.js,Modules/manifest.json
+source.include_patterns = modules/*.py,modules/*.js,modules/*.json
 
-# ── Requirements ──────────────────────────────────────────────────────────────
-# Core
-requirements = python3==3.11.6,kivy==2.3.0,kivymd
+# Combined Requirements (All in one line, no duplicates)
+requirements = python3,kivy==2.3.0,kivymd,requests,certifi,urllib3,charset-normalizer,idna,beautifulsoup4,soupsieve,pyjnius,pillow,zope.event,zope.interface,js2py,six
 
-# Networking & scraping
-requirements += ,requests,certifi,urllib3,charset-normalizer,idna
-requirements += ,beautifulsoup4,soupsieve,lxml
+android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,ACCESS_NETWORK_STATE
+android.api = 33
+android.minapi = 24
+android.ndk = 25c
+android.hwaccel = True
+android.archs = arm64-v8a, armeabi-v7a
+android.allow_backup = False
+orientation = portrait
+android.uses_cleartext_traffic = True
 
-# JS interpreter (Sora/Luna module compatibility)
-requirements += ,js2py
-
-# Android integration
-requirements += ,pyjnius
-
-# Utilities
-requirements += ,pillow,zope.event,zope.interface
-
-# ── Android Platform ──────────────────────────────────────────────────────────
 [buildozer]
 log_level = 2
 warn_on_root = 1
-
-[app:android]
-android.minapi     = 24
-android.ndk        = 25b
-android.sdk        = 33
-android.archs      = arm64-v8a, armeabi-v7a
-
-# Permissions
-android.permissions = \
-    INTERNET, \
-    READ_EXTERNAL_STORAGE, \
-    WRITE_EXTERNAL_STORAGE, \
-    ACCESS_NETWORK_STATE, \
-    FOREGROUND_SERVICE, \
-    WAKE_LOCK, \
-    RECEIVE_BOOT_COMPLETED
-
-# Allow cleartext traffic (needed for some HTTP module sources)
-android.usesCleartextTraffic = true
-
-# Hardware acceleration for video playback
-android.manifest.xmlns_tools = true
-android.manifest.uses_feature = android.hardware.type.watch;required=false
-
-# Activity flags
-android.activity_class_name = org.kivy.android.PythonActivity
-android.extra_manifest_xml = \
-    <uses-feature android:name="android.software.leanback" android:required="false" /> \
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-
-# PiP support (Picture-in-Picture)
-# Add android:supportsPictureInPicture="true" to activity in manifest
-android.extra_manifest_application_arguments = \
-    android:supportsPictureInPicture="true" \
-    android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-
-# ── App Metadata ──────────────────────────────────────────────────────────────
-android.wakelock      = false
-android.allow_backup  = false
-
-# Orientation
-orientation = portrait
-
-# Splash screen
-presplash.filename  = %(source.dir)s/assets/presplash.png
-icon.filename       = %(source.dir)s/assets/icon.png
-
-# Services (for background module updates)
-# android.services = ModuleUpdater:service_module_updater.py
-
-# ── iOS (stub) ────────────────────────────────────────────────────────────────
-[app:ios]
-ios.kivy_ios_url = https://github.com/kivy/kivy-ios
-ios.kivy_ios_branch = master
-ios.ios_deploy_url = https://github.com/phonegap/ios-deploy
-ios.ios_deploy_branch = 1.10.0
