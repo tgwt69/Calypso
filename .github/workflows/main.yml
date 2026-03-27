@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # DO NOT CHANGE THIS - 22.04 is required for Buildozer
     steps:
       - uses: actions/checkout@v4
 
@@ -12,26 +12,21 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install Buildozer dependencies
+      - name: Install Dependencies
         run: |
           sudo apt update
-          # Install modern libraries first
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses-dev libtinfo6 cmake libffi-dev libssl-dev
-          
-          # MANUALLY DOWNLOAD LIBTINFO5 (The missing piece)
-          wget http://archive.ubuntu.com/ubuntu/pool/universe/n/ncurses/libtinfo5_6.4-2_amd64.deb
-          sudo dpkg -i libtinfo5_6.4-2_amd64.deb || sudo apt install -f -y
-          
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
           pip install --user --upgrade buildozer Cython==0.29.33 virtualenv
 
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # The '--v' gives us a detailed log if it fails again
-          buildozer -v android debug
+          # This line forces the build to accept all Android licenses automatically
+          export APP_ANDROID_ACCEPT_SDK_LICENSE=1
+          yes | buildozer -v android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: calypso-debug-apk
+          name: Calypso-Final-APK
           path: bin/*.apk
