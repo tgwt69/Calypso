@@ -1,9 +1,9 @@
-name: Build Calypso APK
+name: Calypso Final Build
 on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04  # DO NOT CHANGE THIS - 22.04 is required for Buildozer
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
@@ -21,7 +21,6 @@ jobs:
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # This line forces the build to accept all Android licenses automatically
           export APP_ANDROID_ACCEPT_SDK_LICENSE=1
           yes | buildozer -v android debug
 
