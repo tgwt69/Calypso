@@ -1,4 +1,4 @@
-# SoraPlayer
+# Calypso
 
 A modular, Sora-inspired media player for Android built with Python + Kivy.  
 Install modules to unlock content sources — the app itself is an empty shell.
